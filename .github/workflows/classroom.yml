@@ -1,4 +1,4 @@
-name: Python Control Structures Assignment
+name: Run Python Tests
 
 on:
   push:
@@ -14,19 +14,16 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: "3.10"
 
-    - name: Install dependencies
+    - name: Install dependencies (if requirements.txt exists)
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt  # Ensure no 'unittest' in this file
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run unit tests
-      run: |
-        cd tests
-        python -m unittest discover -s . -p "test_*.py"
+      run: python -m unittest test_assignment.py
